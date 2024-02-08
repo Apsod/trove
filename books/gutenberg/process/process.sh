@@ -1,13 +1,10 @@
 #!/bin/sh
 
-IN=/input
-
 OUT=/output/gutenberg.json
+IN=/input
+TMP=/var/tmp
 
-for IN in $INPUT/*.epub*; do
-    CMD="pandoc --from epub $IN --to plain | jq -Rsc 'import \"script\"; extract'"
-    echo "${CMD}"
-done | parallel -j 4 > $OUT
+parallel --results $TMP/{1/} pandoc --from epub --to plain ::: $IN/*.epub.noimages
+jq -Rsc 'capture("(?<prefix>.+?\\*{3} START OF THE PROJECT GUTENBERG EBOOK .*? \\*{3}\\s++)(?<text>.*\\S)(?<suffix>\\s*\\*\\*\\* END OF THE PROJECT GUTENBERG EBOOK.*+$)"; "m")' $TMP/*.epub.noimages > $OUT
 
 gzip $OUT
-
