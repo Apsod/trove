@@ -1,11 +1,11 @@
 #!/bin/sh
 
-IN=/input
 OUT=/output/litbank.json
 
-for IN in $IN/*.epub; do
-    CMD="pandoc --from epub $IN --to plain | jq -Rsc 'import \"script\"; extract'"
-    echo "${CMD}"
-done | parallel -j 4 > $OUT
+ls input/*.epub > tmp-file
+
+parallel -a tmp-file pandoc --from epub --to plain | jq -Rsc 'capture("(?<prefix>^.+?Litteraturbanken.se – The Swedish Literature Bank\\s++)(?<text>.*+$\\S)\\s*$"; "m");' > $OUT
+
+rm tmp-file
 
 gzip $OUT
