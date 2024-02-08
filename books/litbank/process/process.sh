@@ -1,13 +1,10 @@
 #!/bin/sh
 
 OUT=/output/litbank.json
+IN=/input
+TMP=/var/tmp
 
-ls /input/*.epub > tmp-file
-
-cat tmp-file
-
-parallel -a tmp-file pandoc --from epub --to plain | jq -Rsc 'capture("(?<prefix>^.+?Litteraturbanken.se – The Swedish Literature Bank\\s++)(?<text>.*+$\\S)\\s*$"; "m")' > $OUT
-
-rm tmp-file
+parallel --results $TMP/{1/} pandoc --from epub --to plain ::: $IN/*.epub
+jq -Rsc 'capture("(?<prefix>^.+?Litteraturbanken.se – The Swedish Literature Bank\\s++)(?<text>.*+$\\S)\\s*$"; "m")' $TMP/*.epub > $OUT
 
 gzip $OUT
