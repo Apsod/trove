@@ -2,6 +2,6 @@ name: books
 kind: process
 depends_on:
   litbank: 
-    ref: git@github.com:apsod/trove.git#main:books/litbank/process
+    ref: git@github.com:apsod/trove.git#small:books/litbank/process
   gutenberg: 
-    ref: git@github.com:apsod/trove.git#main:books/gutenberg/process
+    ref: git@github.com:apsod/trove.git#small:books/gutenberg/process

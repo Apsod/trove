@@ -2,4 +2,4 @@ name: gutenberg
 kind: process
 depends_on:
   input: 
-    ref: git@github.com:apsod/trove.git#main:books/gutenberg/ingest
+    ref: git@github.com:apsod/trove.git#small:books/gutenberg/ingest
