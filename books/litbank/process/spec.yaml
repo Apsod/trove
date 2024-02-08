@@ -1,0 +1,5 @@
+name: litteraturbanken
+kind: process
+depends_on:
+  input: 
+    ref: git@github.com:apsod/trove.git#main:books/litbank/ingest
