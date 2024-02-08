@@ -5,4 +5,5 @@ RUN apk add --no-cache parallel
 VOLUME /input
 VOLUME /output
 COPY process.sh .
+COPY script.jq .
 ENTRYPOINT ["/process.sh"]
