@@ -1,14 +1,10 @@
 #!/bin/sh
 
-IN=/input
-
 OUT=/output/gutenberg.json
+IN=/input
+TMP=/var/tmp
 
-for IN in $INPUT/*.epub*; do
-    JQ_SCRIPT='capture("(?<prefix>.+?\\*{3} START OF THE PROJECT GUTENBERG EBOOK .*? \\*{3})(?<text>.*)(?<suffix>\\*\\*\\* END OF THE PROJECT GUTENBERG EBOOK.*+$)"; "m")'
-    CMD="pandoc --from epub $IN --to plain | jq -Rsc ${JQ_SCRIPT}"
-    echo "${CMD}"
-done | parallel -j 4 > $OUT
+parallel --results $TMP/{1/} pandoc --from epub --to plain ::: $IN/*.epub.noimages
+jq -Rsc 'capture("(?<prefix>.+?\\*{3} START OF THE PROJECT GUTENBERG EBOOK .*? \\*{3}\\s++)(?<text>.*\\S)(?<suffix>\\s*\\*\\*\\* END OF THE PROJECT GUTENBERG EBOOK.*+$)"; "m")' $TMP/*.epub.noimages > $OUT
 
 gzip $OUT
-
