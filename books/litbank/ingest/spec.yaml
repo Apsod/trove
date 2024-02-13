@@ -1,2 +1,7 @@
 name: litteraturbanken
 kind: ingest
+description: |
+  The Swedish litteratur bank, contains swedish litterature in epub format.
+  Some epubs are not redistributable, and needs to be excluded at a later point before redistribution.
+  This container downloads epubs from a precompiled list of URLS in sources.txt, the script mklist.sh
+  can be used to update that list.
